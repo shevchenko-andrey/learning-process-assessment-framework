@@ -1,3 +1,4 @@
+import { User } from "firebase/auth";
 import {
   PropsWithChildren,
   createContext,
@@ -5,7 +6,6 @@ import {
   useRef,
   useState
 } from "react";
-import { User } from "types/User";
 
 type AuthStore = {
   isLogin: boolean;

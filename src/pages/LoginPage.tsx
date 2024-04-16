@@ -2,12 +2,18 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import LoginForm from "components/LoginForm";
 import { useAuth } from "hooks/useAuth";
 import { Link, Navigate } from "react-router-dom";
-import { User } from "types/User";
+import AuthService from "services/AuthService";
+import { UserCredentials } from "types/User";
 
 const LoginPage = () => {
   const { isLogin, login } = useAuth();
-  const handleSubmit = (user: Omit<User, "token" | "id">) => {
-    login({ ...user, id: "1", token: "token" });
+  const handleSubmit = async (credentials: UserCredentials) => {
+    try {
+      const { user } = await AuthService.login(credentials);
+      login(user);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
