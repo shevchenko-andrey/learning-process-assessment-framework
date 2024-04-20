@@ -1,8 +1,9 @@
-import { ChakraProvider, theme } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import React from "react";
 import { RouterProvider } from "react-router-dom";
 import AuthProvider from "./providers/AuthProvider";
 import router from "./router";
+import theme from "./theme";
 
 const App = () => {
   return (

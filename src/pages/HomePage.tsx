@@ -1,16 +1,12 @@
-import { Button } from "@chakra-ui/react";
+import { Center } from "@chakra-ui/react";
 import { useAuth } from "hooks/useAuth";
 
 const HomePage = () => {
-  const { logout } = useAuth();
-
+  const { role } = useAuth();
   return (
-    <div>
-      <h1>Home Page</h1>
-      <Button colorScheme='blue' onClick={logout}>
-        Logout
-      </Button>
-    </div>
+    <Center p={50}>
+      <h1>Home Page {role}</h1>
+    </Center>
   );
 };
 

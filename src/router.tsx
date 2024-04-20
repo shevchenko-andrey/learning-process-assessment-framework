@@ -1,9 +1,12 @@
 import Layout from "components/Layout";
+import ProtectedRoute from "components/ProtectedRoute";
+import RoleGuard from "components/RoleGuard";
 import { createBrowserRouter } from "react-router-dom";
+import { ApplicationRole } from "types/Auth";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import ProtectedRoute from "components/ProtectedRoute";
+import UsersPage from "./pages/UsersPage";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +14,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/home",
+        index: true,
         element: (
           <ProtectedRoute>
             <HomePage />
@@ -19,14 +22,24 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "/login",
-        element: <LoginPage />
-      },
-      {
-        path: "/register",
-        element: <RegisterPage />
+        path: "/users",
+        element: (
+          <ProtectedRoute>
+            <RoleGuard roles={[ApplicationRole.ADMIN]}>
+              <UsersPage />
+            </RoleGuard>
+          </ProtectedRoute>
+        )
       }
     ]
+  },
+  {
+    path: "/login",
+    element: <LoginPage />
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />
   }
 ]);
 

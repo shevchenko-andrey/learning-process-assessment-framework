@@ -1,68 +1,63 @@
-import { User } from "firebase/auth";
-import {
-  PropsWithChildren,
-  createContext,
-  useEffect,
-  useRef,
-  useState
-} from "react";
+import { User, onAuthStateChanged } from "firebase/auth";
+import React, { PropsWithChildren, useEffect, useState } from "react";
+import AuthService from "services/AuthService";
+import UserService from "services/UserService";
+import { ApplicationRole, AuthStore } from "types/Auth";
+import { UserCredentials } from "types/User";
+import { auth } from "../config/firebase";
 
-type AuthStore = {
-  isLogin: boolean;
-  user: User | null;
-  login: (user: User) => void;
-  logout: () => void;
-};
-
-const defaultValue: AuthStore = {
-  isLogin: false,
-  user: null,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  login: (_user: User) => {},
-  logout: () => {}
-};
-
-export const AuthContext = createContext(defaultValue);
+export const AuthContext = React.createContext({} as AuthStore);
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [isLogin, setIsLogin] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const isFirstRender = useRef(true);
+  const [role, setRole] = useState<ApplicationRole>(ApplicationRole.STUDENT);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = (user: User) => {
-    setIsLogin(true);
-    setUser(user);
+  const register = async (credentials: UserCredentials) => {
+    const { user } = await AuthService.register(credentials);
+    await UserService.createUser({
+      id: user.uid,
+      email: user.email ?? "",
+      role: ApplicationRole.STUDENT
+    });
   };
+
+  const login = (credentials: UserCredentials) => {
+    return AuthService.login(credentials);
+  };
+
   const logout = () => {
-    setIsLogin(false);
-    setUser(null);
+    return AuthService.logout();
   };
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      const foundedUser = await UserService.getUserById(
+        user?.uid ?? null
+      );
+      
+      const role = foundedUser ? foundedUser.role : ApplicationRole.STUDENT;
 
-    if (user) {
-      login(JSON.parse(user));
-      setIsLogin(true);
-    }
+      setRole(role);
+      setCurrentUser(user);
+      setLoading(false);
+    });
+
+    return unsubscribe;
   }, []);
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
-  }, [user]);
+  const value = {
+    role,
+    isLogin: currentUser !== null,
+    currentUser,
+    login,
+    register,
+    logout
+  };
 
   return (
-    <AuthContext.Provider value={{ isLogin, user, login, logout }}>
-      {children}
+    <AuthContext.Provider value={value}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

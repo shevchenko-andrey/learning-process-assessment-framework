@@ -1,4 +1,3 @@
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Flex,
   Input,
@@ -7,6 +6,7 @@ import {
   InputRightElement
 } from "@chakra-ui/react";
 import { forwardRef, useState } from "react";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const PasswordInput = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const [show, setShow] = useState(false);
@@ -30,7 +30,7 @@ const PasswordInput = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
           type={"button"}
           onClick={handleClick}
         >
-          {show ? <ViewOffIcon w={5} h={5} /> : <ViewIcon w={5} h={5} />}
+          {show ? <IoEyeOff size={20} /> : <IoEye size={20} />}
         </Flex>
       </InputRightElement>
     </InputGroup>
