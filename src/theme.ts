@@ -21,6 +21,18 @@ const components = {
   })
 };
 
-const theme = extendTheme({ config, breakpoints, components });
+const styles = {
+  global: {
+    "html, body": {
+      margin: 0,
+      padding: 0
+    },
+    "ul, ol, li": {
+      listStyle: "none"
+    }
+  }
+};
+
+const theme = extendTheme({ config, breakpoints, components, styles });
 
 export default theme;

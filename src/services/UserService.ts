@@ -1,12 +1,13 @@
-import { Firestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  Firestore,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc
+} from "firebase/firestore";
 import { db } from "src/config/firebase";
-import { ApplicationRole } from "types/Auth";
-
-interface ApplicationUser {
-  id: string;
-  email: string;
-  role: ApplicationRole;
-}
+import { ApplicationUser } from "types/User";
 
 class UserService {
   private db: Firestore;
@@ -31,6 +32,19 @@ class UserService {
     await setDoc(documentRef, user);
 
     return user;
+  }
+
+  async updateUser(user: ApplicationUser) { 
+    const documentRef = doc(this.db, "users", user.id);
+    await setDoc(documentRef, user);
+  }
+
+  async getAllUsers() {
+    const documentRef = collection(this.db, "users");
+
+    const { docs } = await getDocs(documentRef);
+
+    return docs.map((doc) => doc.data() as ApplicationUser);
   }
 }
 

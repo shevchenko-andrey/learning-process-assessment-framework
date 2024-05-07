@@ -43,8 +43,9 @@ const Layout = () => {
         {isOpen && (
           <MotionBox
             w={"100%"}
-            h={"100%"}
+            minH={"100vh"}
             bg={"white"}
+            zIndex={10}
             position={"absolute"}
             initial={{ y: "-20vh" }}
             animate={{ y: 0 }}
