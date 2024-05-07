@@ -31,6 +31,16 @@ const MainMenu: React.FC<MainMenuProps> = ({ onClose }) => {
         </MenuItem>
       </ProtectedContent>
 
+      <ProtectedContent
+        roles={[ApplicationRole.TEACHER, ApplicationRole.ADMIN]}
+      >
+        <MenuItem>
+          <Link onClick={handleClickMenuItem} to='/teacher/tests'>
+            Tests
+          </Link>
+        </MenuItem>
+      </ProtectedContent>
+
       <MenuItem>
         <button
           onClick={() => {

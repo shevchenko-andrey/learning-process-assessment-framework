@@ -6,6 +6,7 @@ import { ApplicationRole } from "types/Auth";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import TeacherTestsPage from "./pages/TeacherTestsPage";
 import UsersPage from "./pages/UsersPage";
 
 const router = createBrowserRouter([
@@ -27,6 +28,16 @@ const router = createBrowserRouter([
           <ProtectedRoute>
             <RoleGuard roles={[ApplicationRole.ADMIN]}>
               <UsersPage />
+            </RoleGuard>
+          </ProtectedRoute>
+        )
+      },
+      {
+        path: "/teacher/tests",
+        element: (
+          <ProtectedRoute>
+            <RoleGuard roles={[ApplicationRole.TEACHER, ApplicationRole.ADMIN]}>
+              <TeacherTestsPage />
             </RoleGuard>
           </ProtectedRoute>
         )

@@ -13,6 +13,10 @@ const breakpoints = {
   xl: "90em" // 1440px
 };
 
+export const colors = {
+  primary: "#66bf72"
+};
+
 const components = {
   Container: defineStyleConfig({
     baseStyle: {
@@ -33,6 +37,12 @@ const styles = {
   }
 };
 
-const theme = extendTheme({ config, breakpoints, components, styles });
+const theme = extendTheme({
+  config,
+  breakpoints,
+  components,
+  styles,
+  colors
+});
 
 export default theme;

@@ -18,7 +18,7 @@ const MotionBox = motion(Box);
 const Layout = () => {
   const { isOpen, onToggle } = useDisclosure();
   return (
-    <Flex minH={"100vh"} direction={"column"} justify={"space-between"}>
+    <Flex minH={"100vh"} direction={"column"}>
       <Center zIndex={20} p={5}>
         <Flex w={"100%"} justify={"space-between"} align={"center"} gap={5}>
           <Flex align={"center"} gap={5}>
@@ -39,30 +39,26 @@ const Layout = () => {
         </Flex>
       </Center>
 
-      <Box position={"relative"} flex={1}>
-        {isOpen && (
-          <MotionBox
-            w={"100%"}
-            minH={"100vh"}
-            bg={"white"}
-            zIndex={10}
-            position={"absolute"}
-            initial={{ y: "-20vh" }}
-            animate={{ y: 0 }}
-            transition={{ type: "spring", stiffness: 50 }}
-          >
-            <Center flexDirection={"column"} gap={10} py={20}>
-              <MainMenu onClose={onToggle} />
-            </Center>
-          </MotionBox>
-        )}
+      {isOpen && (
+        <MotionBox
+          w={"100%"}
+          h={"100vh"}
+          bg={"white"}
+          zIndex={10}
+          position={"absolute"}
+          initial={{ y: "-20vh" }}
+          animate={{ y: 0 }}
+          transition={{ type: "spring", stiffness: 50 }}
+        >
+          <Center flexDirection={"column"} gap={10} pt={40} pb={20}>
+            <MainMenu onClose={onToggle} />
+          </Center>
+        </MotionBox>
+      )}
 
-        <Container>
-          <Box flex={1}>
-            <Outlet />
-          </Box>
-        </Container>
-      </Box>
+      <Container display={"flex"} flex={1} h={"100%"}>
+        <Outlet />
+      </Container>
     </Flex>
   );
 };
