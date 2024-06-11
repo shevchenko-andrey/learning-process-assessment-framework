@@ -4,6 +4,7 @@ export type ApplicationUser = {
   id: string;
   email: string;
   role: ApplicationRole;
+  groups: string[];
 };
 
 export type UserCredentials = {

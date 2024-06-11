@@ -40,6 +40,11 @@ const MainMenu: React.FC<MainMenuProps> = ({ onClose }) => {
           </Link>
         </MenuItem>
       </ProtectedContent>
+      <MenuItem>
+        <Link onClick={handleClickMenuItem} to='/groups'>
+          Groups
+        </Link>
+      </MenuItem>
 
       <MenuItem>
         <button

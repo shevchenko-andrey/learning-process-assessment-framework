@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   CardBody,
   Flex,
@@ -9,8 +10,10 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { MdModeEditOutline } from "react-icons/md";
+import { ApplicationRole } from "types/Auth";
 import { Test } from "types/Test";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import ProtectedContent from "./ProtectedContent";
 import TestEditor from "./TestEditor";
 
 interface TestPreviewProps {
@@ -52,6 +55,21 @@ const TestPreview: React.FC<TestPreviewProps> = ({
                   <Text>Questions:</Text>
                   <Text>{test.questions.length}</Text>
                 </Flex>
+                <Button
+                  onClick={() => {
+                    console.log("Start test");
+                  }}
+                >
+                  <ProtectedContent roles={[ApplicationRole.STUDENT]}>
+                    <Text>Start a Test</Text>
+                  </ProtectedContent>
+
+                  <ProtectedContent
+                    roles={[ApplicationRole.ADMIN, ApplicationRole.TEACHER]}
+                  >
+                    Preview
+                  </ProtectedContent>
+                </Button>
               </>
             )}
             {editable && (
@@ -62,15 +80,19 @@ const TestPreview: React.FC<TestPreviewProps> = ({
               />
             )}
           </Stack>
-          <Box
-            onClick={toggleEditable}
-            position={"absolute"}
-            right={4}
-            top={4}
-            as={"button"}
+          <ProtectedContent
+            roles={[ApplicationRole.ADMIN, ApplicationRole.TEACHER]}
           >
-            <MdModeEditOutline />
-          </Box>
+            <Box
+              onClick={toggleEditable}
+              position={"absolute"}
+              right={4}
+              top={4}
+              as={"button"}
+            >
+              <MdModeEditOutline />
+            </Box>
+          </ProtectedContent>
         </CardBody>
       </Card>
       <ConfirmDeleteModal

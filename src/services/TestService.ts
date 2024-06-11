@@ -4,9 +4,11 @@ import {
   deleteDoc,
   doc,
   getDocs,
-  setDoc
+  query,
+  setDoc,
+  where
 } from "firebase/firestore";
-import { db } from "src/config/firebase";
+import { auth, db } from "src/config/firebase";
 import { Test } from "types/Test";
 
 class TestService {
@@ -19,7 +21,10 @@ class TestService {
   async createTest(test: Test) {
     const documentRef = doc(this.db, "tests");
 
-    await setDoc(documentRef, test);
+    await setDoc(documentRef, {
+      ...test,
+      owner: auth.currentUser?.uid ?? ""
+    });
 
     return test;
   }
@@ -34,10 +39,11 @@ class TestService {
   }
 
   async getAllTests() {
-    const documentRef = collection(this.db, "tests");
-
-    const { docs } = await getDocs(documentRef);
-
+    const testsRef = query(
+      collection(this.db, "tests"),
+      where("owner", "==", auth.currentUser?.uid)
+    );
+    const { docs } = await getDocs(testsRef);
     return docs.map((doc) => doc.data() as Test);
   }
 }

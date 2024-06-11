@@ -48,7 +48,7 @@ const Layout = () => {
           position={"absolute"}
           initial={{ y: "-20vh" }}
           animate={{ y: 0 }}
-          transition={{ type: "spring", stiffness: 50 }}
+          transition={{ ease: "circInOut" }}
         >
           <Center flexDirection={"column"} gap={10} pt={40} pb={20}>
             <MainMenu onClose={onToggle} />

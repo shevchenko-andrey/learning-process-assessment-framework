@@ -36,7 +36,7 @@ const UsersPage: React.FC = () => {
     <Box as='ul'>
       <SearchInput query={query} onChange={setQuery} />
       {filteredUsers.map((user) => (
-        <Box mt={4} as='li' key={user.id}>
+        <Box key={user.id} mt={4} as='li'>
           <UserCard user={user} editUser={editUser} />
         </Box>
       ))}

@@ -3,7 +3,7 @@ import React from "react";
 import { RouterProvider } from "react-router-dom";
 import AuthProvider from "./providers/AuthProvider";
 import router from "./router";
-import theme from "./theme";
+import theme from "./common/theme";
 
 const App = () => {
   return (
