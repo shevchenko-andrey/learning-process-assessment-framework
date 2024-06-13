@@ -15,10 +15,10 @@ import { IoMdPersonAdd } from "react-icons/io";
 import GroupService from "services/GroupService";
 import { ApplicationRole } from "types/Auth";
 import { Group } from "types/Group";
+import { ApplicationUser } from "types/User";
 import MemberCard from "./MemberCard";
 import MemberEditor from "./MemberEditor";
 import ProtectedContent from "./ProtectedContent";
-import { ApplicationUser } from "types/User";
 
 interface MembersTabProps {
   group: Group;
@@ -34,11 +34,9 @@ const MembersTab: React.FC<MembersTabProps> = ({ group }) => {
   }, [group.id]);
 
   const handleAddMember = async (studentId: string) => {
-    const isMemberExist = members.some(
-      (member) => member.id === studentId
-    );
+    const isMemberExist = members.some((member) => member.id === studentId);
     if (isMemberExist) return;
-    await GroupService.addMembersToGroup(group.id, studentId);
+    await GroupService.addMemberToGroup(group.id, studentId);
     await fetchGroupMembers();
   };
 

@@ -18,7 +18,8 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     await UserService.createUser({
       id: user.uid,
       email: user.email ?? "",
-      role: ApplicationRole.STUDENT
+      role: ApplicationRole.STUDENT,
+      groups: []
     });
   };
 
@@ -32,10 +33,8 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      const foundedUser = await UserService.getUserById(
-        user?.uid ?? null
-      );
-      
+      const foundedUser = await UserService.getUserById(user?.uid ?? null);
+
       const role = foundedUser ? foundedUser.role : ApplicationRole.STUDENT;
 
       setRole(role);
